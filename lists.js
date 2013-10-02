@@ -28,6 +28,20 @@ function map(f, xs) {
 }
 exports.map = map
 
+function filter(p, xs) {
+	if (xs.length < 1) {
+		return []
+	}
+	var x = head(xs)
+	if (p(x)) {
+		return [x].concat(filter(p, tail(xs)))
+	}
+	else {
+		return filter(p, tail(xs))
+	}
+}
+exports.filter = filter
+
 function foldl(f, i, xs) {
 	if (xs.length < 1) {
 		return i
