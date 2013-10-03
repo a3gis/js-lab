@@ -20,11 +20,21 @@ function init(xs) {
 }
 exports.init = init
 
+function append(xs, ys) {
+	return xs.concat(ys)
+}
+exports.append = append
+
+function cons(x, xs) {
+	return append([x], xs)
+}
+exports.cons = cons
+
 function map(f, xs) {
 	if (xs.length < 1) {
 		return []
 	}
-	return [f(head(xs))].concat(map(f, tail(xs)))
+	return cons(f(head(xs)), map(f, tail(xs)))
 }
 exports.map = map
 
@@ -34,7 +44,7 @@ function filter(p, xs) {
 	}
 	var x = head(xs)
 	if (p(x)) {
-		return [x].concat(filter(p, tail(xs)))
+		return cons(x, filter(p, tail(xs)))
 	}
 	else {
 		return filter(p, tail(xs))
@@ -76,14 +86,14 @@ exports.foldr1 = foldr1
 
 function scanl(f, i, xs) {
 	return foldl(function (acc, x) {
-		return acc.concat([f(last(acc), x)])
+		return append(acc, [f(last(acc), x)])
 	}, [i], xs)
 }
 exports.scanl = scanl
 
 function scanr(f, i, xs) {
 	return foldr(function (x, acc) {
-		return [f(head(acc), x)].concat(acc)
+		return cons(f(head(acc), x), concat(acc))
 	}, [i], xs)
 }
 exports.scanr = scanr
